@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -21,6 +23,31 @@ public class FileIO {
 	private static final String NOFOLDER = "Das Verzeichnis zu erstellen war nicht möglich";
 
 	/**
+	 * Liest alles aus einem File
+	 * 
+	 * @param fileName
+	 * @return Liste der eingelesenen Zeilen. Jede Zeile ist ein String
+	 */
+	public static List<String> readFromFile(String fileName) {
+
+		File file = new File(fileName);
+		List<String> zeilen = new ArrayList<String>();
+
+		try (Scanner scan = new Scanner(file)) {
+			while (scan.hasNextLine()) {
+				zeilen.add(scan.nextLine());
+			}
+
+		} catch (FileNotFoundException e) {
+
+			return null;
+		}
+
+		return zeilen;
+
+	}
+
+	/**
 	 * Schreibt auf die einfachste Weise in einen File.
 	 * 
 	 * @param fileName Pfad der Datei
@@ -29,19 +56,14 @@ public class FileIO {
 	 *         sonst null
 	 */
 	public static String writeIntoFile(String fileName, String[] data) {
-		
+
 		if (!checkFolder())
 			return NOFOLDER;
 
 		try (FileWriter fileWriter = new FileWriter(toPath(fileName), true)) {
 
-			String str = "";
-			int i = 0;
-			for (i = 0; i < data.length - 1; i++) {
-				str += (data[i] + SEPARATOR);
-			}
-			str += data[i];
-			fileWriter.write(NL + str);
+			String sprepared = prepareData(data);
+			fileWriter.write(NL + sprepared);
 
 		} catch (IOException e) {
 			return e.getLocalizedMessage();
@@ -49,6 +71,28 @@ public class FileIO {
 		return null;
 	}
 
+	/**
+	 * Erstellt aus den Daten einen String
+	 * 
+	 * @param data als Array String[]
+	 * @return data als String
+	 */
+	private static String prepareData(String[] data) {
+		String str = "";
+		int i = 0;
+		for (i = 0; i < data.length - 1; i++) {
+			str += (data[i] + SEPARATOR);
+		}
+		str += data[i];
+		return str;
+	}
+
+	/**
+	 * Überprüft, ob das Verzeichenis für Daten existiert.<br>
+	 * Wenn nicht, erstellt das.
+	 * 
+	 * @return in das Verzeichnis kann gespeichert werden
+	 */
 	private static boolean checkFolder() {
 		File f = new File(FOLDER);
 		if (!f.exists()) {
@@ -62,6 +106,12 @@ public class FileIO {
 		return true;
 	}
 
+	/**
+	 * Hilfsmethode zum erstelen eines vollständigen Datei-Pfads
+	 * 
+	 * @param fileName
+	 * @return Verzeichnis/Filename
+	 */
 	private static String toPath(String fileName) {
 		return fileName = FOLDER + fileName;
 	}
