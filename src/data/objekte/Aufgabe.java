@@ -1,21 +1,25 @@
 /**
  * @author ValentinaTikko
  */
-package data;
+package data.objekte;
 
 /**
  * Beschreibt eine Aufgabe
  */
 public class Aufgabe extends AObject {
-	
-	private int nummer;
+
+	private Integer nummer = -1;
 	private String thema;
 	private String text;
 
 	@Override
-	protected String getObjectData() {
-		// TODO Auto-generated method stub
-		return null;
+	protected String[] getObjectData() {
+		String[] data = new String[4];
+		data[0] = "" + getId();
+		data[1] = nummer.toString();
+		data[2] = thema;
+		data[3] = text;
+		return data;
 	}
 
 	public int getNummer() {
@@ -41,7 +45,12 @@ public class Aufgabe extends AObject {
 	public void setText(String text) {
 		this.text = text;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		String str = "Thema: \"" + thema + "\". A." + nummer + " ";
+		str += text.substring(0, 30); // Nur den Beginn des Textes
+		return str;
+	}
 
 }

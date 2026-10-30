@@ -1,15 +1,19 @@
 /**
  * @author ValentinaTikko
  */
-package data;
+package data.objekte;
 
 import java.util.List;
+
+import data.io.FileIO;
 
 /**
  * Mutterklasse aller Objekte in diesem Proekt
  */
 public abstract class AObject {
 
+	private static final String KLASSENBUCH = "Klassenbuch.csv";
+	private static final String SAVED_MSG = "Der Eintrag wurde gespeichert";;
 	private int id;
 
 	/**
@@ -18,7 +22,7 @@ public abstract class AObject {
 	 * 
 	 * @return daten
 	 */
-	protected abstract String getObjectData();
+	protected abstract String[] getObjectData();
 
 	/**
 	 * Speichert ein Objekt
@@ -26,9 +30,14 @@ public abstract class AObject {
 	 * @return Fehlermeldung, wenn das Speichern <br>
 	 *         nicht gelingt, sonst null
 	 */
-	protected String save() {
+	public String save() {
 
-		return null;
+		if (id < 1)
+			id = FileIO.getLineCount(KLASSENBUCH) + 1;
+		String err = FileIO.writeIntoFile(KLASSENBUCH, getObjectData());
+		if (err == null)
+			return SAVED_MSG;
+		return err;
 	}
 
 	/**
