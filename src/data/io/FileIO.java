@@ -17,20 +17,22 @@ import java.util.Scanner;
  */
 public class FileIO {
 
-	private static final String NL = "\n";
-	private static final String SEPARATOR = ";";
-	private static final String FOLDER = "./data/";
-	private static final String NOFOLDER = "Das Verzeichnis zu erstellen war nicht möglich";
+	public static final String NL = "\n";
+	public static final String DELIMETER = ";";
+	public static final String FOLDER = "./data/";
+	public static final String NOFOLDER = "Das Verzeichnis zu erstellen war nicht möglich";
 
 	/**
 	 * Liest alles aus einem File
 	 * 
 	 * @param fileName
-	 * @return Liste der eingelesenen Zeilen. Jede Zeile ist ein String
+	 * @return Liste der eingelesenen Zeilen. Jede Zeile ist ein String.<br>
+	 *         Leere Liste, wenn der File keine Zeilen hat.<br>
+	 *         null, wenn beim Einlesen ein Fehler aufgetreten ist.<br>
 	 */
 	public static List<String> readFromFile(String fileName) {
 
-		File file = new File(fileName);
+		File file = new File(toPath(fileName));
 		List<String> zeilen = new ArrayList<String>();
 
 		try (Scanner scan = new Scanner(file)) {
@@ -81,7 +83,7 @@ public class FileIO {
 		String str = "";
 		int i = 0;
 		for (i = 0; i < data.length - 1; i++) {
-			str += (data[i] + SEPARATOR);
+			str += (data[i] + DELIMETER);
 		}
 		str += data[i];
 		return str;

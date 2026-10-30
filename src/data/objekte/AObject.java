@@ -3,8 +3,6 @@
  */
 package data.objekte;
 
-import java.util.List;
-
 import data.io.FileIO;
 
 /**
@@ -12,9 +10,10 @@ import data.io.FileIO;
  */
 public abstract class AObject {
 
-	private static final String KLASSENBUCH = "Klassenbuch.csv";
+	public static final String KLASSENBUCH = "Klassenbuch.csv";
 	private static final String SAVED_MSG = "Der Eintrag wurde gespeichert";;
-	private int id;
+	private int id = -1;
+
 
 	/**
 	 * Jede Tochterklasse muss die Daten, die<br>
@@ -23,6 +22,7 @@ public abstract class AObject {
 	 * @return daten
 	 */
 	protected abstract String[] getObjectData();
+	
 
 	/**
 	 * Speichert ein Objekt
@@ -38,16 +38,6 @@ public abstract class AObject {
 		if (err == null)
 			return SAVED_MSG;
 		return err;
-	}
-
-	/**
-	 * Lädt alle gespeicherten Objekte
-	 * 
-	 * @return Liste der Objekte
-	 */
-	protected List<AObject> loadAll() {
-		// TODO
-		return null;
 	}
 
 	public int getId() {
