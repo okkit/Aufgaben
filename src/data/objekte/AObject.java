@@ -11,7 +11,7 @@ import data.io.FileIO;
 public abstract class AObject {
 
 	public static final String KLASSENBUCH = "Klassenbuch.csv";
-	private static final String SAVED_MSG = "Der Eintrag wurde gespeichert";;
+	private static final String SAVED_MSG = "Der Eintrag wurde gespeichert\n";;
 	private int id = -1;
 
 

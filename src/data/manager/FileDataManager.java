@@ -25,7 +25,7 @@ public class FileDataManager {
 	 * 
 	 * @return Liste der Aufgabe-Instanzen
 	 */
-	public List<Aufgabe> ladeAlleAufgaben() {
+	public static List<Aufgabe> ladeAlleAufgaben() {
 		List<String> data = FileIO.readFromFile(AObject.KLASSENBUCH);
 
 		if (data == null)
