@@ -33,10 +33,16 @@ public class FileDataManager {
 		List<Aufgabe> aufgaben = new ArrayList<Aufgabe>();
 		String[] werte;
 		
-		for (String str : data) {
+		for (String str : data) { // str: 1;5;Thema 0;0 TextTextTextTextTextTextTextText
 			if (str.isEmpty())
 				continue;
 			werte = str.split(FileIO.DELIMETER);
+//			werte[0] ist 1
+//			werte[1] ist 5
+//			werte[2] ist Thema0
+//			werte[3] ist TextTextTextTextTextTextTextText
+//			Aufgabe a = new Aufgabe();
+//			a.setId(werte[0]);
 			aufgaben.add(AObjectFactory.aufgabeFromData(werte));
 		}
 
