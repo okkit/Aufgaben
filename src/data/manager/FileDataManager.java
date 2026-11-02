@@ -17,9 +17,13 @@ import data.objekte.Aufgabe;
 public class FileDataManager {
 
 	/**
-	 * Lädt alle gespeicherten Aufgabe
+	 * Lädt alle gespeicherten Aufgaben.<br>
+	 * Jede gelesene Zeile ist ein String - ein Eintrag, d.h. eine Aufgabe.<br>
+	 * Die String-Zeilen werden gesplitet zu String[], aus dem<br>
+	 * anschließend  eine Instanz der Klasse Aufgabe erzeugt un zur<br>
+	 * Liste hinzugefügt wird.
 	 * 
-	 * @return Liste der Aufgaben
+	 * @return Liste der Aufgabe-Instanzen
 	 */
 	public List<Aufgabe> ladeAlleAufgaben() {
 		List<String> data = FileIO.readFromFile(AObject.KLASSENBUCH);
