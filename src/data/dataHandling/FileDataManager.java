@@ -1,7 +1,7 @@
 /**
  * @author ValentinaTikko
  */
-package data.manager;
+package data.dataHandling;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +16,12 @@ import data.objekte.Aufgabe;
  */
 public class FileDataManager {
 
+
 	/**
 	 * Lädt alle gespeicherten Aufgaben.<br>
 	 * Jede gelesene Zeile ist ein String - ein Eintrag, d.h. eine Aufgabe.<br>
 	 * Die String-Zeilen werden gesplitet zu String[], aus dem<br>
-	 * anschließend  eine Instanz der Klasse Aufgabe erzeugt un zur<br>
+	 * anschließend eine Instanz der Klasse Aufgabe erzeugt un zur<br>
 	 * Liste hinzugefügt wird.
 	 * 
 	 * @return Liste der Aufgabe-Instanzen
@@ -32,7 +33,7 @@ public class FileDataManager {
 			return null;
 		List<Aufgabe> aufgaben = new ArrayList<Aufgabe>();
 		String[] werte;
-		
+
 		for (String str : data) { // str: 1;5;Thema 0;0 TextTextTextTextTextTextTextText
 			if (str.isEmpty())
 				continue;
