@@ -3,9 +3,7 @@
  */
 package gui.console;
 
-import java.util.List;
-
-import data.dataHandling.FileDataManager;
+import data.dataHandling.SCVDataManager;
 import data.objekte.AObjectFactory;
 import data.objekte.Aufgabe;
 
@@ -33,21 +31,21 @@ public class Main {
 	private void start() {
 		IO.println(HALLO);
 
-		if (IO.readln(CHOICE).equals("1"))
-			ausgabe();
-		else
+//		if (IO.readln(CHOICE).equals("1"))
+//			ausgabe();
+//		else
 			eingabe();
 
 	}
 
-	private void ausgabe() {
-		
-		List<Aufgabe> aufgaben = FileDataManager.ladeAlleAufgaben();
-		for (Aufgabe aufgabe : aufgaben) {
-			IO.println(aufgabe.toString());
-		}
-		
-	}
+//	private void ausgabe() {
+//		
+//		ArrayList<Aufgabe> aufgaben = SCVDataManager.leseAlleAufgaben();
+//		for (Aufgabe aufgabe : aufgaben) {
+//			IO.println(aufgabe.toString());
+//		}
+//		
+//	}
 
 	private void eingabe() {
 		String[] eingabe = new String[4];
@@ -60,7 +58,8 @@ public class Main {
 			eingabe[TEXT] = IO.readln(TEXT_LABEL);
 
 			Aufgabe a = AObjectFactory.aufgabeFromData(eingabe);
-			IO.print(a.save());
+//			IO.print(a.save());
+			SCVDataManager.getInstance().save(a);
 
 			more = IO.readln(MORE).equals("q");
 		}

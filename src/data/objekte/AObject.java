@@ -21,7 +21,7 @@ public abstract class AObject{
 	 * 
 	 * @return daten
 	 */
-	protected abstract String[] getObjectData();
+	public abstract String[] getObjectData();
 	
 //	public String sqlStatement() {
 //		

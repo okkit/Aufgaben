@@ -13,7 +13,7 @@ public class Aufgabe extends AObject {
 	private String text;
 
 	@Override
-	protected String[] getObjectData() {
+	public  String[] getObjectData() {
 		String[] data = new String[4];
 		data[0] = "" + getId();
 		data[1] = nummer.toString();

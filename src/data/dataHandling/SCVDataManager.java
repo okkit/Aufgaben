@@ -4,7 +4,6 @@
 package data.dataHandling;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import data.io.FileIO;
 import data.objekte.AObject;
@@ -14,8 +13,17 @@ import data.objekte.Aufgabe;
 /**
  * Managet Persistenz via text-File
  */
-public class FileDataManager {
-
+public class SCVDataManager implements DataManager {
+	
+	private static final SCVDataManager instance = new SCVDataManager();
+	
+	public static SCVDataManager getInstance() {
+		return instance;
+	}
+	
+	private SCVDataManager() {
+		
+	}
 
 	/**
 	 * Lädt alle gespeicherten Aufgaben.<br>
@@ -26,28 +34,31 @@ public class FileDataManager {
 	 * 
 	 * @return Liste der Aufgabe-Instanzen
 	 */
-	public static List<Aufgabe> ladeAlleAufgaben() {
-		List<String> data = FileIO.readFromFile(AObject.KLASSENBUCH);
+	@Override
+	public ArrayList<Aufgabe> leseAlleAufgaben() {
+		ArrayList<String> data = FileIO.readFromFile(AObject.KLASSENBUCH);
 
 		if (data == null)
 			return null;
-		List<Aufgabe> aufgaben = new ArrayList<Aufgabe>();
+		ArrayList<Aufgabe> aufgaben = new ArrayList<Aufgabe>();
 		String[] werte;
 
-		for (String str : data) { // str: 1;5;Thema 0;0 TextTextTextTextTextTextTextText
+		for (String str : data) {
 			if (str.isEmpty())
 				continue;
 			werte = str.split(FileIO.DELIMETER);
-//			werte[0] ist 1
-//			werte[1] ist 5
-//			werte[2] ist Thema0
-//			werte[3] ist TextTextTextTextTextTextTextText
-//			Aufgabe a = new Aufgabe();
-//			a.setId(werte[0]);
 			aufgaben.add(AObjectFactory.aufgabeFromData(werte));
 		}
 
 		return aufgaben;
+	}
+
+	@Override
+	public void save(Aufgabe aufgabe) {
+		if (aufgabe.getId() < 1)
+			aufgabe.setId(FileIO.getLineCount(AObject.KLASSENBUCH) + 1);
+		String err = FileIO.writeIntoFile(AObject.KLASSENBUCH, aufgabe.getObjectData());
+
 	}
 
 }

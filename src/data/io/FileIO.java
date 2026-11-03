@@ -8,7 +8,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -30,10 +29,10 @@ public class FileIO {
 	 *         Leere Liste, wenn der File keine Zeilen hat.<br>
 	 *         null, wenn beim Einlesen ein Fehler aufgetreten ist.<br>
 	 */
-	public static List<String> readFromFile(String fileName) {
+	public static ArrayList<String> readFromFile(String fileName) {
 
 		File file = new File(toPath(fileName));
-		List<String> zeilen = new ArrayList<String>();
+		ArrayList<String> zeilen = new ArrayList<String>();
 
 		try (Scanner scan = new Scanner(file)) {
 			while (scan.hasNextLine()) {
@@ -129,7 +128,7 @@ public class FileIO {
 		int count = 0;
 		try (Scanner scanner = new Scanner(new File(toPath(fileName)))) {
 			while (scanner.hasNextLine()) {
-				scanner.next();
+				scanner.nextLine();
 				count++;
 			}
 		} catch (FileNotFoundException e) {
