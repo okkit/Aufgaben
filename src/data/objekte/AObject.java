@@ -8,7 +8,7 @@ import data.io.FileIO;
 /**
  * Mutterklasse aller Objekte in diesem Proekt
  */
-public abstract class AObject {
+public abstract class AObject{
 
 	public static final String KLASSENBUCH = "Klassenbuch.csv";
 	private static final String SAVED_MSG = "Der Eintrag wurde gespeichert\n";;
@@ -23,6 +23,26 @@ public abstract class AObject {
 	 */
 	protected abstract String[] getObjectData();
 	
+//	public String sqlStatement() {
+//		
+//		String sql = "insert into " + this.getClass().getName();
+//		sql += "(";
+//		
+////		INSERT INTO `bbq`.`fach` (`bezeichnung`) VALUES ('FI');
+//		
+//		Field[] fields = this.getClass().getDeclaredFields();
+//		for (Field field : fields) {
+//			sql += field.getName();
+//			
+//			
+//		}
+//		sql += ")";
+//		sql += "VALUES";
+//		sql += "(";
+//		sql += "%s, %s";
+//		sql += ")";
+//		return sql;
+//	}
 
 	/**
 	 * Speichert ein Objekt
