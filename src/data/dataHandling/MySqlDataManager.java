@@ -21,6 +21,17 @@ public class MySqlDataManager implements DataManager {
 	private static String INSERT_AUFGABE = "INSERT INTO klassenbuch.aufgabe (nummer, thema, text) VALUES (?, ?, ?);";
 	private static String UPDATET_AUFGABE = "UPDATE klassenbuch.aufgabe SET nummer = ?, thema = ?, text = ? WHERE (id = ?);";
 
+	/// Löschen einer Aufgabe aus der Datenbank
+	public void delete(Aufgabe aufgabe) throws SQLException {
+
+		Connection verbindungZuDerMariaDB = DriverManager.getConnection("jdbc:mysql://localhost:3307/", "root", "root");
+
+		Statement butler = verbindungZuDerMariaDB.createStatement();
+
+		butler.execute("DELETE FROM klassenbuch.aufgabe WHERE (id = " + aufgabe.getId() + ");");
+
+	}
+
 	@Override
 	public String save(Aufgabe aufgabe) {
 

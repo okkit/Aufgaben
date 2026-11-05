@@ -12,7 +12,7 @@ public class TestDataManager {
 		if (true)
 			testSQLManager();
 		else
-			testSCVManager();
+			testCSVManager();
 
 	}
 
@@ -35,7 +35,7 @@ public class TestDataManager {
 		IO.println(a);
 	}
 
-	private static void testSCVManager() {
+	private static void testCSVManager() {
 
 		DataManager mng = CSVDataManager.getInstance(); // nur eine Instanz möglich
 

@@ -23,5 +23,12 @@ public interface DataManager {
 	 * @return The List of loaded objects
 	 */
 	public ArrayList<Aufgabe> leseAlleAufgaben();
+	
+	/**
+	 * 
+	 * @param aufgabe
+	 * @return
+	 */
+//	public String delete(Aufgabe aufgabe);
 
 }
