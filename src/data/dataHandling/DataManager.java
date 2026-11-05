@@ -10,9 +10,18 @@ import data.objekte.Aufgabe;
  */
 public interface DataManager {
 
-	public void save(Aufgabe aufgabe);
-	
-	public ArrayList<Aufgabe> leseAlleAufgaben();
+	/**
+	 * Insert/Update Object into persistent data store
+	 * 
+	 * @param aufgabe Object to be saved
+	 * @return Message in case of error, null - no error occured
+	 */
+	public String save(Aufgabe aufgabe);
 
+	/**
+	 * Fetsch Aufgabe-Date from the persistent data store
+	 * @return The List of loaded objects
+	 */
+	public ArrayList<Aufgabe> leseAlleAufgaben();
 
 }

@@ -13,15 +13,15 @@ import data.objekte.Aufgabe;
 /**
  * Managet Persistenz via text-File
  */
-public class SCVDataManager implements DataManager {
+public class CSVDataManager implements DataManager {
 
-	private static final SCVDataManager instance = new SCVDataManager();
+	private static final CSVDataManager instance = new CSVDataManager();
 
-	public static SCVDataManager getInstance() {
+	public static CSVDataManager getInstance() {
 		return instance;
 	}
 
-	private SCVDataManager() {
+	private CSVDataManager() {
 
 	}
 
@@ -54,11 +54,11 @@ public class SCVDataManager implements DataManager {
 	}
 
 	@Override
-	public void save(Aufgabe aufgabe) {
+	public String save(Aufgabe aufgabe) {
 //		if (aufgabe.getId() < 1)
 		aufgabe.setId(FileIO.getLineCount(AObject.KLASSENBUCH) + 1);
 		String err = FileIO.writeIntoFile(AObject.KLASSENBUCH, aufgabe.getObjectData());
-
+		return err;
 	}
 
 }

@@ -18,61 +18,51 @@ public class MySqlDataManager implements DataManager {
 	private static final String URL = "jdbc:mysql://localhost:3307/Klassenbuch";
 	private static final String USER = "root";
 	private static final String PASSWORD = "root";
-	private static String INSERT_AUFGABE = "INSERT INTO klassenbuch.aufgabe (nummer, thema, text) "
-			+ "VALUES (?, ?, ?);";
-//	UPDATE `klassenbuch`.`aufgabe` SET nummer = ? `thema` = ?, `text` = ? WHERE (`id` = ?);
-	private static String UPDATET_AUFGABE = "";
+	private static String INSERT_AUFGABE = "INSERT INTO klassenbuch.aufgabe (nummer, thema, text) VALUES (?, ?, ?);";
+	private static String UPDATET_AUFGABE = "UPDATE klassenbuch.aufgabe SET nummer = ?, thema = ?, text = ? WHERE (id = ?);";
 
 	@Override
-	public void save(Aufgabe aufgabe) {
+	public String save(Aufgabe aufgabe) {
 
 		if (aufgabe == null) {
-			IO.println("Kann kein null-Objekt speichern");
-			return;
+			return "Kann kein null-Objekt speichern";
 		}
-		
-		if (aufgabe.getId() > 0)
-			update(aufgabe); // TODO
-		else
-			insert(aufgabe);			
-	}
-	
-	/**
-	 * Führt den QSL-Insert-Befehl aus
-	 * @param a
-	 */
-	private void insert(Aufgabe aufgabe) {
-		
+
+		// Hat das Objekt noch keine PK? Wenn nein, insert.
+		boolean insert = aufgabe.getId() < 0;
+
 		// Connection zu der Datenbank
 		try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);) {
 
-			// Statement, mit dem wir den SQL-Befel absetzen		
-			PreparedStatement stmt = conn.prepareStatement(INSERT_AUFGABE, Statement.RETURN_GENERATED_KEYS);
+			String sql = insert ? INSERT_AUFGABE : UPDATET_AUFGABE;
+
+			// Statement, mit dem wir den SQL-Befel absetzen
+			PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
 			stmt.setString(2, aufgabe.getThema());
 			stmt.setInt(1, aufgabe.getNummer());
 			stmt.setString(3, aufgabe.getText());
-			
+			if (!insert)
+				stmt.setInt(4, aufgabe.getId());
+
 			stmt.execute();
-			
+
 			// Wir brauchen den Primyry Key, dass auto generated wurde
 			ResultSet generated = stmt.getGeneratedKeys();
-			
 
-			
-			int id = -1;
-			if (generated.next()) {
+			if (generated != null) {
+				int id = -1;
+				if (generated.next()) {
 
-				id = generated.getInt(1);
-				aufgabe.setId(id);
+					id = generated.getInt(1);
+					aufgabe.setId(id);
+				}
 			}
-			IO.println("**** " + id);
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return e.getMessage();
 		}
-
+		return null;
 	}
 
 	@Override

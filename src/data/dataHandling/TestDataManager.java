@@ -21,22 +21,23 @@ public class TestDataManager {
 		DataManager mng = new MySqlDataManager();// SCVDataManager.getInstance(); // nur eine Instanz möglich
 
 		Aufgabe a = new Aufgabe();
-		a.setNummer(100);
-		a.setThema("Thema 100");
-		a.setText("Text 100");
+		a.setNummer(777);
+		a.setThema("Thema 777");
+		a.setText("Text 777");
 		IO.println("Before Save " + a.getId());
 
 		mng.save(a);
 
-		IO.println("Saved " + a.getId());
+		IO.println(a);
 
 		a.setText("geänderter Text");
 		mng.save(a);
+		IO.println(a);
 	}
 
 	private static void testSCVManager() {
 
-		DataManager mng = SCVDataManager.getInstance(); // nur eine Instanz möglich
+		DataManager mng = CSVDataManager.getInstance(); // nur eine Instanz möglich
 
 		List<?> data = mng.leseAlleAufgaben();
 

@@ -3,7 +3,7 @@
  */
 package gui.console;
 
-import data.dataHandling.SCVDataManager;
+import data.dataHandling.CSVDataManager;
 import data.objekte.AObjectFactory;
 import data.objekte.Aufgabe;
 
@@ -59,7 +59,7 @@ public class Main {
 
 			Aufgabe a = AObjectFactory.aufgabeFromData(eingabe);
 //			IO.print(a.save());
-			SCVDataManager.getInstance().save(a);
+			CSVDataManager.getInstance().save(a);
 
 			more = IO.readln(MORE).equals("q");
 		}
