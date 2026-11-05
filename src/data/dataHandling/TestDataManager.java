@@ -24,11 +24,14 @@ public class TestDataManager {
 		a.setNummer(100);
 		a.setThema("Thema 100");
 		a.setText("Text 100");
+		IO.println("Before Save " + a.getId());
+
 		mng.save(a);
-		IO.print("Saved");
-		
-//		a.setText("geänderter Text");
-//		mng.save(a);
+
+		IO.println("Saved " + a.getId());
+
+		a.setText("geänderter Text");
+		mng.save(a);
 	}
 
 	private static void testSCVManager() {
