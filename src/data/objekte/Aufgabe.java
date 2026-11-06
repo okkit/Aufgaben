@@ -9,17 +9,16 @@ package data.objekte;
 public class Aufgabe extends AObject {
 
 	private Integer nummer = -1;
-	private String thema;
 	private String text;
+	private Thema thema;
 	
-	public Aufgabe(Integer nummer, String thema, String text) {
-		this(-1, nummer, thema, text);
+	public Aufgabe(Integer nummer, String text) {
+		this(-1, nummer, text);
 	}
 
-	public Aufgabe(int id, Integer nummer, String thema, String text) {
+	public Aufgabe(int id, Integer nummer, String text) {
 		super(id);
 		this.nummer = nummer;
-		this.thema = thema;
 		this.text = text;
 	}
 
@@ -32,7 +31,7 @@ public class Aufgabe extends AObject {
 		String[] data = new String[4];
 		data[0] = "" + getId();
 		data[1] = nummer.toString();
-		data[2] = thema;
+		data[2] = "" + (thema != null ? thema.getId() : -1);
 		data[3] = text;
 		return data;
 	}
@@ -45,11 +44,11 @@ public class Aufgabe extends AObject {
 		this.nummer = nummer;
 	}
 
-	public String getThema() {
+	public Thema getThema() {
 		return thema;
 	}
 
-	public void setThema(String thema) {
+	public void setThema(Thema thema) {
 		this.thema = thema;
 	}
 

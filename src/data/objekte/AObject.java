@@ -31,27 +31,6 @@ public abstract class AObject {
 	 */
 	public abstract String[] getObjectData();
 
-//	public String sqlStatement() {
-//		
-//		String sql = "insert into " + this.getClass().getName();
-//		sql += "(";
-//		
-	//// INSERT INTO `bbq`.`fach` (`bezeichnung`) VALUES ('FI');
-//		
-//		Field[] fields = this.getClass().getDeclaredFields();
-//		for (Field field : fields) {
-//			sql += field.getName();
-//			
-//			
-//		}
-//		sql += ")";
-//		sql += "VALUES";
-//		sql += "(";
-//		sql += "%s, %s";
-//		sql += ")";
-//		return sql;
-//	}
-
 	/**
 	 * Speichert ein Objekt
 	 * 

@@ -1,6 +1,5 @@
 package data.dataHandling;
 
-import java.lang.classfile.TypeAnnotation.TargetType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
@@ -11,16 +10,24 @@ public class TestDataManager {
 
 	public static void main(String[] args) {
 
-		if (true)
-			testSQLManager();
-		else
-			testCSVManager();
+		testSelectAllAufgaben();
 
+	}
+
+	private static void testSelectAllAufgaben() {
+		DataManager mng = new MySqlDataManager();
+
+		ArrayList<Aufgabe> aufgaben = mng.leseAlleAufgaben();
+
+		for (Aufgabe a : aufgaben) {
+			IO.println(a);
+		}
+		
 	}
 
 	private static void testSQLManager() {
 
-		DataManager mng = new MySqlDataManager();// SCVDataManager.getInstance(); // nur eine Instanz möglich
+		DataManager mng = new MySqlDataManager();
 
 		ArrayList<Aufgabe> aufgaben = mng.leseAlleAufgaben();
 
@@ -28,13 +35,10 @@ public class TestDataManager {
 			mng.delete(a);
 		}
 
-		aufgaben = mng.leseAlleAufgaben();
-		IO.println(" ---------------- aufgaben -----------------");
-		for (Aufgabe a : aufgaben)
-			IO.println(a);
+		
 
 		for (int i = 10; i < 17; i++) {
-			mng.save(new Aufgabe(i, "thema " + i, "Text text " + i));
+			mng.save(new Aufgabe(i, "Text text " + i));
 		}
 		IO.println(" ---------------- aufgaben wurden generiert-----------------");
 		aufgaben = mng.leseAlleAufgaben();

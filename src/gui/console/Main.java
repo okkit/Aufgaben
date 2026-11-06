@@ -3,10 +3,6 @@
  */
 package gui.console;
 
-import data.dataHandling.CSVDataManager;
-import data.objekte.AObjectFactory;
-import data.objekte.Aufgabe;
-
 /**
  * Startet das Programm
  */
@@ -57,9 +53,10 @@ public class Main {
 			eingabe[THEMA] = IO.readln(THEMA_LABEL);
 			eingabe[TEXT] = IO.readln(TEXT_LABEL);
 
-			Aufgabe a = AObjectFactory.aufgabeFromData(eingabe);
-//			IO.print(a.save());
-			CSVDataManager.getInstance().save(a);
+			// TODO Muss angepasst werden an die Beziehung Thema(1)-Aufgabe(m)
+//			Aufgabe a = AObjectFactory.aufgabeFromData(eingabe);
+////			IO.print(a.save());
+//			CSVDataManager.getInstance().save(a);
 
 			more = IO.readln(MORE).equals("q");
 		}

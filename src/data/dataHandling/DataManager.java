@@ -3,6 +3,7 @@ package data.dataHandling;
 import java.util.ArrayList;
 
 import data.objekte.Aufgabe;
+import data.objekte.Thema;
 
 /**
  * Definiert die Schnittstelle zu der permanenten Datenspeicherung
@@ -17,6 +18,8 @@ public interface DataManager {
 	 * @return Message of the SQLException
 	 */
 	public String save(Aufgabe aufgabe);
+	
+	public ArrayList<Thema> leseAlleThemen(boolean mitAufgaben);
 
 	/**
 	 * Fetsch Aufgabe-Date from the persistent data store

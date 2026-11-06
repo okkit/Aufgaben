@@ -18,7 +18,6 @@ public class TestA {
 
 			for (int j = 0; j < an; j++) {
 				a = new Aufgabe();
-				a.setThema(t);
 				a.setNummer(i * an + j);
 				a.setText(j + " TextTextTextTextTextTextTextText");
 				a.save();

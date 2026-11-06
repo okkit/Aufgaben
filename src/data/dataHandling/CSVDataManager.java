@@ -9,6 +9,7 @@ import data.io.FileIO;
 import data.objekte.AObject;
 import data.objekte.AObjectFactory;
 import data.objekte.Aufgabe;
+import data.objekte.Thema;
 
 /**
  * Managet Persistenz via text-File
@@ -47,7 +48,8 @@ public class CSVDataManager implements DataManager {
 			if (str.isEmpty())
 				continue;
 			werte = str.split(FileIO.DELIMETER);
-			aufgaben.add(AObjectFactory.aufgabeFromData(werte));
+			// TODO Aufgabe gehört zu einem Thema
+//			aufgaben.add(AObjectFactory.aufgabeFromData(werte));
 		}
 
 		return aufgaben;
@@ -63,6 +65,12 @@ public class CSVDataManager implements DataManager {
 
 	@Override
 	public String delete(Aufgabe aufgabe) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<Thema> leseAlleThemen(boolean mitAufgaben) {
 		// TODO Auto-generated method stub
 		return null;
 	}
