@@ -14,21 +14,23 @@ public interface DataManager {
 	 * Insert/Update Object into persistent data store
 	 * 
 	 * @param aufgabe Object to be saved
-	 * @return Message in case of error, null - no error occured
+	 * @return Message of the SQLException
 	 */
 	public String save(Aufgabe aufgabe);
 
 	/**
 	 * Fetsch Aufgabe-Date from the persistent data store
-	 * @return The List of loaded objects
+	 * 
+	 * @return The List of loaded objects, the List can be empty but not null!<br>
+	 *         null - SQLException occured
 	 */
 	public ArrayList<Aufgabe> leseAlleAufgaben();
-	
+
 	/**
 	 * 
 	 * @param aufgabe
-	 * @return
+	 * @return message of the SQLException 
 	 */
-//	public String delete(Aufgabe aufgabe);
+	public String delete(Aufgabe aufgabe);
 
 }

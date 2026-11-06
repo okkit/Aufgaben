@@ -1,5 +1,7 @@
 package data.dataHandling;
 
+import java.lang.classfile.TypeAnnotation.TargetType;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -20,19 +22,35 @@ public class TestDataManager {
 
 		DataManager mng = new MySqlDataManager();// SCVDataManager.getInstance(); // nur eine Instanz möglich
 
-		Aufgabe a = new Aufgabe();
-		a.setNummer(777);
-		a.setThema("Thema 777");
-		a.setText("Text 777");
-		IO.println("Before Save " + a.getId());
+		ArrayList<Aufgabe> aufgaben = mng.leseAlleAufgaben();
 
-		mng.save(a);
+		for (Aufgabe a : aufgaben) {
+			mng.delete(a);
+		}
 
-		IO.println(a);
+		aufgaben = mng.leseAlleAufgaben();
+		IO.println(" ---------------- aufgaben -----------------");
+		for (Aufgabe a : aufgaben)
+			IO.println(a);
 
-		a.setText("geänderter Text");
-		mng.save(a);
-		IO.println(a);
+		for (int i = 10; i < 17; i++) {
+			mng.save(new Aufgabe(i, "thema " + i, "Text text " + i));
+		}
+		IO.println(" ---------------- aufgaben wurden generiert-----------------");
+		aufgaben = mng.leseAlleAufgaben();
+		for (Aufgabe a : aufgaben)
+			IO.println(a);
+
+		for (Aufgabe a : aufgaben) {
+			a.setText(a.getText() + " - geändert ");
+			mng.save(a);
+		}
+
+		aufgaben = mng.leseAlleAufgaben();
+		IO.println(" ---------------- aufgaben wurden geändert-----------------");
+		for (Aufgabe a : aufgaben)
+			IO.println(a);
+
 	}
 
 	private static void testCSVManager() {

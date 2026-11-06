@@ -11,6 +11,21 @@ public class Aufgabe extends AObject {
 	private Integer nummer = -1;
 	private String thema;
 	private String text;
+	
+	public Aufgabe(Integer nummer, String thema, String text) {
+		this(-1, nummer, thema, text);
+	}
+
+	public Aufgabe(int id, Integer nummer, String thema, String text) {
+		super(id);
+		this.nummer = nummer;
+		this.thema = thema;
+		this.text = text;
+	}
+
+	public Aufgabe() {
+		super();
+	}
 
 	@Override
 	public  String[] getObjectData() {

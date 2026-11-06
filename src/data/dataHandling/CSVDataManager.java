@@ -61,4 +61,10 @@ public class CSVDataManager implements DataManager {
 		return err;
 	}
 
+	@Override
+	public String delete(Aufgabe aufgabe) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

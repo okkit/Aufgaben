@@ -8,12 +8,20 @@ import data.io.FileIO;
 /**
  * Mutterklasse aller Objekte in diesem Proekt
  */
-public abstract class AObject{
+public abstract class AObject {
 
 	public static final String KLASSENBUCH = "Klassenbuch.csv";
 	private static final String SAVED_MSG = "Der Eintrag wurde gespeichert\n";;
 	private int id = -1;
 
+	public AObject(int id) {
+		super();
+		this.id = id;
+	}
+
+	public AObject() {
+		super();
+	}
 
 	/**
 	 * Jede Tochterklasse muss die Daten, die<br>
@@ -22,13 +30,13 @@ public abstract class AObject{
 	 * @return daten
 	 */
 	public abstract String[] getObjectData();
-	
+
 //	public String sqlStatement() {
 //		
 //		String sql = "insert into " + this.getClass().getName();
 //		sql += "(";
 //		
-////		INSERT INTO `bbq`.`fach` (`bezeichnung`) VALUES ('FI');
+	//// INSERT INTO `bbq`.`fach` (`bezeichnung`) VALUES ('FI');
 //		
 //		Field[] fields = this.getClass().getDeclaredFields();
 //		for (Field field : fields) {
