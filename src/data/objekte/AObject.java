@@ -9,6 +9,10 @@ import data.io.FileIO;
  * Mutterklasse aller Objekte in diesem Proekt
  */
 public abstract class AObject {
+	
+	// Konstante für Nutzung an der Schnittstelle zu der 
+	// MySQL-Datenbank (s. MySqlDataManager)
+	public static final String ID = "id";
 
 	public static final String KLASSENBUCH = "Klassenbuch.csv";
 	private static final String SAVED_MSG = "Der Eintrag wurde gespeichert\n";;

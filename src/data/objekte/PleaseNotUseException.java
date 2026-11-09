@@ -7,7 +7,4 @@ public class PleaseNotUseException extends Exception {
 	public PleaseNotUseException() {
 		super("Please Not Use this ");
 	}
-	
-	
-
 }

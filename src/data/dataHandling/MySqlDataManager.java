@@ -24,6 +24,35 @@ public class MySqlDataManager implements DataManager {
 	private static String INSERT_AUFGABE = "INSERT INTO klassenbuch.aufgabe (nummer, thema_id, text) VALUES (?, ?, ?);";
 	private static String UPDATET_AUFGABE = "UPDATE klassenbuch.aufgabe SET nummer = ?, thema_id = ?, text = ? WHERE (id = ?);";
 
+//	Irgendwo ist gemacht worden: Thema th = new Thema(...);
+//	Das heißt, der Parameter th ist eine Instanz der Klasse Thema.
+//	Diese Instanz kann ihre id geben: th.getId().
+//	Diese id können wir im SELECT-Befehl verwenden:
+//	"SELECT * from AUFGABE WHERE thema_id = " + th.getId();
+	public ArrayList<Aufgabe> leseAlleAufgabenZumThema(Thema thema) {
+
+		try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);){
+			Statement stmt = connection.createStatement();		
+			ResultSet result = stmt.executeQuery("SELECT * FROM klassenbuch.aufgabe where thema_id = " + thema.getId());
+
+			ArrayList<Aufgabe> liste = new ArrayList<Aufgabe>();
+			
+			while(result.next()) {
+				Aufgabe aufgabe = new Aufgabe(result.getInt(Aufgabe.ID), result.getString(Aufgabe.TEXT));
+				thema.addAufgabe(aufgabe);
+//				 Das kann ich mir sparen, weil bei th.add findet aufgabe.setThema(th) so wie so statt 
+//				aufgabe.setThema(th);			
+				liste.add(aufgabe);
+			}
+			
+			return liste;
+
+		} catch (SQLException e) {
+			return null;
+		}
+
+	}
+
 	@Override
 	public ArrayList<Thema> leseAlleThemen(boolean mitAufgaben) {
 
@@ -38,8 +67,8 @@ public class MySqlDataManager implements DataManager {
 				return null;
 
 			while (result.next()) {
-				themen.add(new Thema(result.getInt(1), result.getString(2)));
-				
+				themen.add(new Thema(result.getInt(Thema.ID), result.getString(Thema.TITEL)));
+
 			}
 
 		} catch (SQLException e) {
@@ -48,7 +77,6 @@ public class MySqlDataManager implements DataManager {
 
 		return themen;
 	}
-	
 
 	@Override
 	public ArrayList<Aufgabe> leseAlleAufgaben() {
@@ -63,6 +91,7 @@ public class MySqlDataManager implements DataManager {
 			for (Thema thema : themen) {
 
 				stmt = conn.createStatement();
+//				"SELECT * FROM klassenbuch.aufgabe where thema_id = ";
 				ResultSet result = stmt.executeQuery(SELECT_AUFGABEN_ZUM_THEMA + thema.getId());
 
 				if (result == null)
@@ -82,7 +111,7 @@ public class MySqlDataManager implements DataManager {
 		return aufgaben;
 	}
 
-	@Override
+//	@Override
 	public String delete(Aufgabe aufgabe) {
 
 		try (Connection verbindungZuDerMariaDB = DriverManager.getConnection("jdbc:mysql://localhost:3307/", "root",
@@ -91,6 +120,7 @@ public class MySqlDataManager implements DataManager {
 			Statement butler = verbindungZuDerMariaDB.createStatement();
 
 			butler.execute("DELETE FROM klassenbuch.aufgabe WHERE (id = " + aufgabe.getId() + ");");
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -115,11 +145,10 @@ public class MySqlDataManager implements DataManager {
 			// Statement, mit dem wir den SQL-Befel absetzen
 			PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-			stmt.setInt(2, aufgabe.getThema().getId());
-			stmt.setInt(1, aufgabe.getNummer());
-			stmt.setString(3, aufgabe.getText());
+			stmt.setInt(1, aufgabe.getThema().getId());
+			stmt.setString(1, aufgabe.getText());
 			if (!insert)
-				stmt.setInt(4, aufgabe.getId());
+				stmt.setInt(2, aufgabe.getId());
 
 			stmt.execute();
 

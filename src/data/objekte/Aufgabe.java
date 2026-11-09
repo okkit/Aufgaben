@@ -8,17 +8,19 @@ package data.objekte;
  */
 public class Aufgabe extends AObject {
 
-	private Integer nummer = -1;
+	// Konstante für Nutzung an der Schnittstelle zu der
+	// MySQL-Datenbank (s. MySqlDataManager)
+	public static final String TEXT = "text";
+
 	private String text;
 	private Thema thema;
-	
-	public Aufgabe(Integer nummer, String text) {
-		this(-1, nummer, text);
+
+	public Aufgabe(String text) {
+		this(-1, text);
 	}
 
-	public Aufgabe(int id, Integer nummer, String text) {
+	public Aufgabe(int id, String text) {
 		super(id);
-		this.nummer = nummer;
 		this.text = text;
 	}
 
@@ -27,21 +29,12 @@ public class Aufgabe extends AObject {
 	}
 
 	@Override
-	public  String[] getObjectData() {
+	public String[] getObjectData() {
 		String[] data = new String[4];
 		data[0] = "" + getId();
-		data[1] = nummer.toString();
-		data[2] = "" + (thema != null ? thema.getId() : -1);
-		data[3] = text;
+		data[1] = "" + (thema != null ? thema.getId() : -1);
+		data[2] = text;
 		return data;
-	}
-
-	public int getNummer() {
-		return nummer;
-	}
-
-	public void setNummer(int nummer) {
-		this.nummer = nummer;
 	}
 
 	public Thema getThema() {
@@ -62,7 +55,7 @@ public class Aufgabe extends AObject {
 
 	@Override
 	public String toString() {
-		String str = getId() + ". Thema: \"" + thema + "\". A." + nummer + " ";
+		String str = getId() + ". Thema: \"" + thema;
 		str += text.substring(0, text.length() > 30 ? 30 : text.length()); // Nur den Beginn des Textes
 		return str;
 	}
