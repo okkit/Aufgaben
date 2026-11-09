@@ -60,9 +60,10 @@ public class Thema extends AObject {
 
 		if (aufgaben.contains(aufgabe)) {
 			aufgaben.remove(aufgabe);
-			aufgaben.add(aufgabe);
-			aufgabe.setThema(this);
 		}
+		aufgaben.add(aufgabe);
+		aufgabe.setThema(this);
+
 	}
 
 	public List<Aufgabe> getAufgaben() {
@@ -88,4 +89,8 @@ public class Thema extends AObject {
 		return null;
 	}
 
+	@Override
+	public String toString() {
+		return getId() + ". " + titel;
+	}
 }

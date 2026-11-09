@@ -55,8 +55,7 @@ public class Aufgabe extends AObject {
 
 	@Override
 	public String toString() {
-		String str = getId() + ". Thema: \"" + thema;
-		str += text.substring(0, text.length() > 30 ? 30 : text.length()); // Nur den Beginn des Textes
+		String str = "	" + getId() + ". " + text.substring(0, text.length() > 30 ? 30 : text.length()); 
 		return str;
 	}
 

@@ -20,6 +20,15 @@ import data.objekte.Thema;
  */
 public class MySqlDataManager implements DataManager {
 
+	private static final MySqlDataManager instance = new MySqlDataManager();
+
+	public static MySqlDataManager getInstance() {
+		return instance;
+	}
+
+	private MySqlDataManager() {
+	};
+
 	private static final String URL = "jdbc:mysql://localhost:3307/Klassenbuch";
 	private static final String USER = "root";
 	private static final String PASSWORD = "root";
@@ -34,12 +43,9 @@ public class MySqlDataManager implements DataManager {
 			Statement stmt = connection.createStatement();
 			ResultSet result = stmt.executeQuery("SELECT * FROM klassenbuch.aufgabe where thema_id = " + thema.getId());
 
-			ArrayList<Aufgabe> liste = new ArrayList<Aufgabe>();
-
 			while (result.next()) {
 				Aufgabe aufgabe = new Aufgabe(result.getInt(Aufgabe.ID), result.getString(Aufgabe.TEXT));
-				thema.addAufgabe(aufgabe);			
-				liste.add(aufgabe);
+				thema.addAufgabe(aufgabe);
 			}
 
 			return null;
@@ -69,7 +75,7 @@ public class MySqlDataManager implements DataManager {
 				themen.add(thema);
 				if (mitAufgaben) {
 					leseAlleAufgabenZumThema(thema);
-				}				
+				}
 			}
 
 		} catch (SQLException e) {
@@ -78,7 +84,6 @@ public class MySqlDataManager implements DataManager {
 
 		return themen;
 	}
-
 
 	@Override
 	public String delete(Aufgabe aufgabe) {
