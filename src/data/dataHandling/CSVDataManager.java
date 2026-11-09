@@ -14,7 +14,7 @@ import data.objekte.Thema;
 /**
  * Managet Persistenz via text-File
  */
-public class CSVDataManager implements DataManager {
+public class CSVDataManager {
 
 	private static final CSVDataManager instance = new CSVDataManager();
 
@@ -35,7 +35,6 @@ public class CSVDataManager implements DataManager {
 	 * 
 	 * @return Liste der Aufgabe-Instanzen
 	 */
-	@Override
 	public ArrayList<Aufgabe> leseAlleAufgaben() {
 		ArrayList<String> data = FileIO.readFromFile(AObject.KLASSENBUCH);
 
@@ -55,7 +54,6 @@ public class CSVDataManager implements DataManager {
 		return aufgaben;
 	}
 
-	@Override
 	public String save(Aufgabe aufgabe) {
 //		if (aufgabe.getId() < 1)
 		aufgabe.setId(FileIO.getLineCount(AObject.KLASSENBUCH) + 1);
@@ -63,13 +61,11 @@ public class CSVDataManager implements DataManager {
 		return err;
 	}
 
-	@Override
 	public String delete(Aufgabe aufgabe) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public ArrayList<Thema> leseAlleThemen(boolean mitAufgaben) {
 		// TODO Auto-generated method stub
 		return null;

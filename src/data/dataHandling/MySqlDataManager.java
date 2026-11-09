@@ -1,3 +1,6 @@
+/**
+ * @author ValentinaTikko
+ */
 package data.dataHandling;
 
 import java.sql.Connection;
@@ -7,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 import data.objekte.Aufgabe;
 import data.objekte.Thema;
@@ -20,41 +24,34 @@ public class MySqlDataManager implements DataManager {
 	private static final String USER = "root";
 	private static final String PASSWORD = "root";
 	private static String SELECT_THEMEN = "SELECT * FROM klassenbuch.thema";
-	private static String SELECT_AUFGABEN_ZUM_THEMA = "SELECT * FROM klassenbuch.aufgabe where thema_id = ";
 	private static String INSERT_AUFGABE = "INSERT INTO klassenbuch.aufgabe (nummer, thema_id, text) VALUES (?, ?, ?);";
 	private static String UPDATET_AUFGABE = "UPDATE klassenbuch.aufgabe SET nummer = ?, thema_id = ?, text = ? WHERE (id = ?);";
 
-//	Irgendwo ist gemacht worden: Thema th = new Thema(...);
-//	Das heißt, der Parameter th ist eine Instanz der Klasse Thema.
-//	Diese Instanz kann ihre id geben: th.getId().
-//	Diese id können wir im SELECT-Befehl verwenden:
-//	"SELECT * from AUFGABE WHERE thema_id = " + th.getId();
-	public ArrayList<Aufgabe> leseAlleAufgabenZumThema(Thema thema) {
+	@Override
+	public String leseAlleAufgabenZumThema(Thema thema) {
 
-		try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);){
-			Statement stmt = connection.createStatement();		
+		try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);) {
+			Statement stmt = connection.createStatement();
 			ResultSet result = stmt.executeQuery("SELECT * FROM klassenbuch.aufgabe where thema_id = " + thema.getId());
 
 			ArrayList<Aufgabe> liste = new ArrayList<Aufgabe>();
-			
-			while(result.next()) {
+
+			while (result.next()) {
 				Aufgabe aufgabe = new Aufgabe(result.getInt(Aufgabe.ID), result.getString(Aufgabe.TEXT));
-				thema.addAufgabe(aufgabe);
-//				 Das kann ich mir sparen, weil bei th.add findet aufgabe.setThema(th) so wie so statt 
-//				aufgabe.setThema(th);			
+				thema.addAufgabe(aufgabe);			
 				liste.add(aufgabe);
 			}
-			
-			return liste;
+
+			return null;
 
 		} catch (SQLException e) {
-			return null;
+			return "Lesen der Aufgaben zum Thema " + thema + "war nicht möglich";
 		}
 
 	}
 
 	@Override
-	public ArrayList<Thema> leseAlleThemen(boolean mitAufgaben) {
+	public List<Thema> leseAlleThemen(boolean mitAufgaben) {
 
 		ArrayList<Thema> themen = new ArrayList<Thema>();
 
@@ -66,9 +63,13 @@ public class MySqlDataManager implements DataManager {
 			if (result == null)
 				return null;
 
+			Thema thema;
 			while (result.next()) {
-				themen.add(new Thema(result.getInt(Thema.ID), result.getString(Thema.TITEL)));
-
+				thema = new Thema(result.getInt(Thema.ID), result.getString(Thema.TITEL));
+				themen.add(thema);
+				if (mitAufgaben) {
+					leseAlleAufgabenZumThema(thema);
+				}				
 			}
 
 		} catch (SQLException e) {
@@ -78,40 +79,8 @@ public class MySqlDataManager implements DataManager {
 		return themen;
 	}
 
+
 	@Override
-	public ArrayList<Aufgabe> leseAlleAufgaben() {
-
-		ArrayList<Aufgabe> aufgaben = new ArrayList<Aufgabe>();
-		ArrayList<Thema> themen = leseAlleThemen(false);
-
-		// Connection zu der Datenbank
-		try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);) {
-
-			Statement stmt;
-			for (Thema thema : themen) {
-
-				stmt = conn.createStatement();
-//				"SELECT * FROM klassenbuch.aufgabe where thema_id = ";
-				ResultSet result = stmt.executeQuery(SELECT_AUFGABEN_ZUM_THEMA + thema.getId());
-
-				if (result == null)
-					return null;
-
-				while (result.next()) {
-					Aufgabe a = new Aufgabe(result.getInt("id"), result.getString("text"));
-					aufgaben.add(a);
-					a.setThema(thema);
-				}
-			}
-
-		} catch (SQLException e) {
-			return null;
-		}
-
-		return aufgaben;
-	}
-
-//	@Override
 	public String delete(Aufgabe aufgabe) {
 
 		try (Connection verbindungZuDerMariaDB = DriverManager.getConnection("jdbc:mysql://localhost:3307/", "root",
