@@ -3,6 +3,9 @@
  */
 package data.dataHandling;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -12,6 +15,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import config.KBProperties;
+import data.objekte.AObject;
 import data.objekte.Aufgabe;
 import data.objekte.Thema;
 
@@ -29,9 +34,9 @@ public class MySqlDataManager implements DataManager {
 	private MySqlDataManager() {
 	};
 
-	private static final String URL = "jdbc:mysql://localhost:3307/Klassenbuch";
-	private static final String USER = "root";
-	private static final String PASSWORD = "root";
+	private static final String URL = KBProperties.getURL();
+	private static final String USER = KBProperties.getUser();
+	private static final String PASSWORD = KBProperties.getPass();
 	private static String SELECT_THEMEN = "SELECT * FROM klassenbuch.thema";
 	private static String INSERT_AUFGABE = "INSERT INTO klassenbuch.aufgabe (nummer, thema_id, text) VALUES (?, ?, ?);";
 	private static String UPDATET_AUFGABE = "UPDATE klassenbuch.aufgabe SET nummer = ?, thema_id = ?, text = ? WHERE (id = ?);";
@@ -85,11 +90,11 @@ public class MySqlDataManager implements DataManager {
 		return themen;
 	}
 
+
 	@Override
 	public String delete(Aufgabe aufgabe) {
 
-		try (Connection verbindungZuDerMariaDB = DriverManager.getConnection("jdbc:mysql://localhost:3307/", "root",
-				"root")) {
+		try (Connection verbindungZuDerMariaDB = DriverManager.getConnection(URL, USER, PASSWORD)) {
 
 			Statement butler = verbindungZuDerMariaDB.createStatement();
 

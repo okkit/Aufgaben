@@ -9,12 +9,17 @@ public class TestDataManager {
 
 	public static void main(String[] args) {
 
+		checkData();
+	}
+
+	private static void checkData() {
 		List<Thema> themen = MySqlDataManager.getInstance().leseAlleThemen(true);
-		
+
 		for (Thema th : themen) {
 			IO.println(th.toString());
-			for(Aufgabe a: th.getAufgaben())
+			for (Aufgabe a : th.getAufgaben())
 				IO.println(a);
 		}
+
 	}
 }

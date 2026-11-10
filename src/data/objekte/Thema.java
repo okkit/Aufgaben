@@ -17,6 +17,9 @@ public class Thema extends AObject {
 
 	private String titel;
 	private List<Aufgabe> aufgaben;
+	
+	public Thema(){
+	}
 
 	/**
 	 * Damit keine andere Klasse den Standartkonstruktor<br>
@@ -27,7 +30,7 @@ public class Thema extends AObject {
 	 * @param titel
 	 * @throws PleaseNotUseException
 	 */
-	public Thema(String titel) throws PleaseNotUseException {
+	public Thema(String titel)  throws PleaseNotUseException {
 	}
 
 	/**
