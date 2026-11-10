@@ -3,9 +3,6 @@
  */
 package data.dataHandling;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -16,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import config.KBProperties;
-import data.objekte.AObject;
 import data.objekte.Aufgabe;
 import data.objekte.Thema;
 
@@ -37,16 +33,13 @@ public class MySqlDataManager implements DataManager {
 	private static final String URL = KBProperties.getURL();
 	private static final String USER = KBProperties.getUser();
 	private static final String PASSWORD = KBProperties.getPass();
-	private static String SELECT_THEMEN = "SELECT * FROM klassenbuch.thema";
-	private static String INSERT_AUFGABE = "INSERT INTO klassenbuch.aufgabe (nummer, thema_id, text) VALUES (?, ?, ?);";
-	private static String UPDATET_AUFGABE = "UPDATE klassenbuch.aufgabe SET nummer = ?, thema_id = ?, text = ? WHERE (id = ?);";
 
 	@Override
 	public String leseAlleAufgabenZumThema(Thema thema) {
 
 		try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);) {
 			Statement stmt = connection.createStatement();
-			ResultSet result = stmt.executeQuery("SELECT * FROM klassenbuch.aufgabe where thema_id = " + thema.getId());
+			ResultSet result = stmt.executeQuery(MySQLConstants.SELECT_BY_THEMA + thema.getId());
 
 			while (result.next()) {
 				Aufgabe aufgabe = new Aufgabe(result.getInt(Aufgabe.ID), result.getString(Aufgabe.TEXT));
@@ -56,7 +49,7 @@ public class MySqlDataManager implements DataManager {
 			return null;
 
 		} catch (SQLException e) {
-			return "Lesen der Aufgaben zum Thema " + thema + "war nicht möglich";
+			return MySQLConstants.LOAD_NOT_POSSIBLE.formatted(thema);
 		}
 
 	}
@@ -69,7 +62,7 @@ public class MySqlDataManager implements DataManager {
 		try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);) {
 
 			Statement stmt = conn.createStatement();
-			ResultSet result = stmt.executeQuery(SELECT_THEMEN);
+			ResultSet result = stmt.executeQuery(MySQLConstants.SELECT_THEMEN);
 
 			if (result == null)
 				return null;
@@ -90,7 +83,6 @@ public class MySqlDataManager implements DataManager {
 		return themen;
 	}
 
-
 	@Override
 	public String delete(Aufgabe aufgabe) {
 
@@ -98,7 +90,7 @@ public class MySqlDataManager implements DataManager {
 
 			Statement butler = verbindungZuDerMariaDB.createStatement();
 
-			butler.execute("DELETE FROM klassenbuch.aufgabe WHERE (id = " + aufgabe.getId() + ");");
+			butler.execute(MySQLConstants.DELETE_AUFGABE_BY_THEMA.formatted(aufgabe.getId()));
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -110,7 +102,7 @@ public class MySqlDataManager implements DataManager {
 	public String save(Aufgabe aufgabe) {
 
 		if (aufgabe == null) {
-			return "Kann kein null-Objekt speichern";
+			return MySQLConstants.SAVING_NULL_OBJECT;
 		}
 
 		// Hat das Objekt noch keine PK? Wenn nein, insert.
@@ -119,7 +111,7 @@ public class MySqlDataManager implements DataManager {
 		// Connection zu der Datenbank
 		try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);) {
 
-			String sql = insert ? INSERT_AUFGABE : UPDATET_AUFGABE;
+			String sql = insert ? MySQLConstants.INSERT_AUFGABE : MySQLConstants.UPDATET_AUFGABE;
 
 			// Statement, mit dem wir den SQL-Befel absetzen
 			PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
