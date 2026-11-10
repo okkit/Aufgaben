@@ -17,3 +17,4 @@ final class MySQLConstants {
 	static final String SAVING_NULL_OBJECT = "Kann kein null-Objekt speichern";
 	static final String LOAD_NOT_POSSIBLE = "Lesen der Aufgaben zum Thema %s war nicht möglich";
 }
+

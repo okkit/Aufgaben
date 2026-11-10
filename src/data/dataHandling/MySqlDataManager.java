@@ -88,9 +88,8 @@ public class MySqlDataManager implements DataManager {
 
 		try (Connection verbindungZuDerMariaDB = DriverManager.getConnection(URL, USER, PASSWORD)) {
 
-			Statement butler = verbindungZuDerMariaDB.createStatement();
-
-			butler.execute(MySQLConstants.DELETE_AUFGABE_BY_THEMA.formatted(aufgabe.getId()));
+			Statement stmt = verbindungZuDerMariaDB.createStatement();
+			stmt.execute(MySQLConstants.DELETE_AUFGABE_BY_THEMA.formatted(aufgabe.getId()));
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -112,6 +111,11 @@ public class MySqlDataManager implements DataManager {
 		try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);) {
 
 			String sql = insert ? MySQLConstants.INSERT_AUFGABE : MySQLConstants.UPDATET_AUFGABE;
+			
+//			if (insert)
+//				sql = MySQLConstants.INSERT_AUFGABE;
+//			else
+//				sql = MySQLConstants.UPDATET_AUFGABE;
 
 			// Statement, mit dem wir den SQL-Befel absetzen
 			PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
