@@ -1,19 +1,23 @@
 package gui.mittwoch;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 public class Mittwoch extends JFrame{
 	
 	public static void main(String[] args) {
+
 		
 		new Mittwoch();
 	}
 
 	public Mittwoch() {
 		
-//		JFrame frame = new JFrame("Mittwoch");	
 		setDefaultCloseOperation(EXIT_ON_CLOSE);		
 		setBounds(3000, 100, 600, 400);
+		
+		ImageIcon img = new ImageIcon("./rsrc/img/OIP.png");
+		setIconImage(img.getImage());
 		
 		initComponents();
 		setVisible(true);			
@@ -23,6 +27,7 @@ public class Mittwoch extends JFrame{
 		
 		Panelli panellli = new Panelli();
 		add(panellli);
+//		add(new PanelMitLayout());
 	}
 
 }

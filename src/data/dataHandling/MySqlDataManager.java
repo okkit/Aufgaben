@@ -33,6 +33,17 @@ public class MySqlDataManager implements DataManager {
 	private static final String URL = KBProperties.getURL();
 	private static final String USER = KBProperties.getUser();
 	private static final String PASSWORD = KBProperties.getPass();
+	
+	public Thema[] leseAlleThemen() {
+		
+		List<Thema> all = leseAlleThemen(true);
+		Thema[] arr = new Thema[all.size()];
+		int i = 0;
+		for (Thema thema : all) {
+			arr[i++] = thema;
+		}
+		return arr;
+	}
 
 	@Override
 	public String leseAlleAufgabenZumThema(Thema thema) {
