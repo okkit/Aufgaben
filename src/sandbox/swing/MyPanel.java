@@ -1,8 +1,8 @@
-package gui.sandbox;
+package sandbox.swing;
 
 import javax.swing.JPanel;
 
-import gui.GuiConstants;
+import sandbox.GuiConstants;
 
 public abstract class MyPanel extends JPanel {
 

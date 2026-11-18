@@ -1,11 +1,11 @@
-package gui.sandbox;
+package sandbox.swing;
 
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
 
 import javax.swing.JFrame;
 
-import gui.GuiConstants;
+import sandbox.GuiConstants;
 
 public class MyFrame extends JFrame {
 		

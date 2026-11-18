@@ -1,4 +1,4 @@
-package gui.mittwoch;
+package sandbox.gui.mittwoch;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;

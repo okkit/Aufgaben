@@ -8,7 +8,6 @@ import javax.swing.JList;
 import data.dataHandling.MySqlDataManager;
 import data.objekte.Aufgabe;
 import data.objekte.Thema;
-import gui.swing.AppComboBox;
 
 public class AppListPanel extends AppPanel {
 
@@ -20,12 +19,13 @@ public class AppListPanel extends AppPanel {
 	public AppListPanel() {
 		super(TITLE);
 		setBackground(BG_COLOR);
+		initComponents();
 	}
 
-	@Override
 	protected void initComponents() {
 
-		Thema[] themen = MySqlDataManager.getInstance().leseAlleThemen();
+		IO.println("comboBox");
+		Thema[] themen = MySqlDataManager.getInstance().getThemenOverView();
 		if (themen != null) {
 			comboBox = new AppComboBox(themen);
 			addComponent(comboBox, 0, 0, 100, 10);

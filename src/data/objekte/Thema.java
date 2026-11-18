@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Beschreibt das Objekt Thema
  */
-public class Thema extends AObject {
+public class Thema extends AObject implements Comparable<Thema>{
 
 	// Konstante für Nutzung an der Schnittstelle zu der
 	// MySQL-Datenbank (s. MySqlDataManager)
@@ -68,6 +68,10 @@ public class Thema extends AObject {
 		aufgabe.setThema(this);
 
 	}
+	
+	public void removeAufgabe(Aufgabe aufgabe) {
+		aufgaben.remove(aufgabe);
+	}
 
 	public List<Aufgabe> getAufgaben() {
 		return aufgaben;
@@ -94,6 +98,11 @@ public class Thema extends AObject {
 
 	@Override
 	public String toString() {
-		return getId() + ". " + titel;
+		return titel;
+	}
+
+	@Override
+	public int compareTo(Thema th) {
+		return th.getTitel().compareTo(titel);
 	}
 }

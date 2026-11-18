@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
-public abstract class AppPanel extends JPanel {
+public class AppPanel extends JPanel {
 
 	private static final Font PANEL_TITEL_FONT = new Font("SansSerif", Font.ITALIC, 18);
 	private GridBagConstraints constraints;
@@ -19,7 +19,6 @@ public abstract class AppPanel extends JPanel {
 	public AppPanel() {
 		super();
 		initLayout();
-		initComponents();
 	}
 
 	public AppPanel(String title) {
@@ -33,10 +32,25 @@ public abstract class AppPanel extends JPanel {
 		);
 		setBorder(border);
 	}
+	
+	/**
+	 * 
+	 * @param title
+	 */
+	public void setTitle(String title) {
+		((TitledBorder)getBorder()).setTitle(title);
+		repaint();
+	}
 
-	protected abstract void initComponents();
-
-	protected void addComponent(JComponent comp, int col, int row, int width, int height) {
+	/**
+	 * 
+	 * @param comp
+	 * @param col
+	 * @param row
+	 * @param width
+	 * @param height
+	 */
+	public void addComponent(JComponent comp, int col, int row, int width, int height) {
 
 		constraints.gridx = col;
 		constraints.gridy = row;
@@ -55,6 +69,15 @@ public abstract class AppPanel extends JPanel {
 		setLayout(gbl);
 		constraints.fill = GridBagConstraints.BOTH;
 	}
+	
+
+	protected void handleError(String err) {
+		if (err != null)
+			showError(err);
+		else
+			showMessage("done successful :-)");
+	}
+
 	
 	protected void showMessage(String text) {
 		popUp("Info", text, JOptionPane.PLAIN_MESSAGE);

@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import config.KBProperties;
@@ -33,12 +34,13 @@ public class MySqlDataManager implements DataManager {
 	private static final String URL = KBProperties.getURL();
 	private static final String USER = KBProperties.getUser();
 	private static final String PASSWORD = KBProperties.getPass();
-	
-	public Thema[] leseAlleThemen() {
-		
+
+	public Thema[] getThemenOverView() {
+
 		List<Thema> all = leseAlleThemen(true);
-		Thema[] arr = new Thema[all.size()];
-		int i = 0;
+		Thema[] arr = new Thema[all.size() + 1];
+		arr[0] = null;
+		int i = 1;
 		for (Thema thema : all) {
 			arr[i++] = thema;
 		}
@@ -53,7 +55,8 @@ public class MySqlDataManager implements DataManager {
 			ResultSet result = stmt.executeQuery(MySQLConstants.SELECT_BY_THEMA + thema.getId());
 
 			while (result.next()) {
-				Aufgabe aufgabe = new Aufgabe(result.getInt(Aufgabe.ID), result.getString(Aufgabe.TEXT));
+				Aufgabe aufgabe = new Aufgabe(result.getInt(Aufgabe.ID), result.getString(Aufgabe.TITLE),
+						result.getString(Aufgabe.TEXT));
 				thema.addAufgabe(aufgabe);
 			}
 
@@ -69,7 +72,6 @@ public class MySqlDataManager implements DataManager {
 	public List<Thema> leseAlleThemen(boolean mitAufgaben) {
 
 		ArrayList<Thema> themen = new ArrayList<Thema>();
-
 		try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);) {
 
 			Statement stmt = conn.createStatement();
@@ -87,6 +89,9 @@ public class MySqlDataManager implements DataManager {
 				}
 			}
 
+			IO.println("Compare");
+			Collections.sort(themen);
+//			Collections.sort(themen, (a, b) -> a.compareTo(b));
 		} catch (SQLException e) {
 			return null;
 		}
@@ -99,6 +104,7 @@ public class MySqlDataManager implements DataManager {
 
 		try (Connection verbindungZuDerMariaDB = DriverManager.getConnection(URL, USER, PASSWORD)) {
 
+			aufgabe.getThema().removeAufgabe(aufgabe);
 			Statement stmt = verbindungZuDerMariaDB.createStatement();
 			stmt.execute(MySQLConstants.DELETE_AUFGABE_BY_THEMA.formatted(aufgabe.getId()));
 
@@ -122,19 +128,14 @@ public class MySqlDataManager implements DataManager {
 		try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);) {
 
 			String sql = insert ? MySQLConstants.INSERT_AUFGABE : MySQLConstants.UPDATET_AUFGABE;
-			
-//			if (insert)
-//				sql = MySQLConstants.INSERT_AUFGABE;
-//			else
-//				sql = MySQLConstants.UPDATET_AUFGABE;
-
 			// Statement, mit dem wir den SQL-Befel absetzen
 			PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-			stmt.setInt(1, aufgabe.getThema().getId());
-			stmt.setString(1, aufgabe.getText());
+			stmt.setString(1, aufgabe.getTitel());
+			stmt.setInt(2, aufgabe.getThema().getId());
+			stmt.setString(3, aufgabe.getText());
 			if (!insert)
-				stmt.setInt(2, aufgabe.getId());
+				stmt.setInt(4, aufgabe.getId());
 
 			stmt.execute();
 
@@ -149,6 +150,8 @@ public class MySqlDataManager implements DataManager {
 					aufgabe.setId(id);
 				}
 			}
+
+			aufgabe.getThema().addAufgabe(aufgabe);
 
 		} catch (SQLException e) {
 			return e.getMessage();

@@ -1,4 +1,4 @@
-package gui.sandbox;
+package sandbox.swing;
 
 import java.awt.GridLayout;
 

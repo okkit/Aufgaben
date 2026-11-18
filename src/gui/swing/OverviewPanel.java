@@ -4,66 +4,109 @@ import java.awt.Color;
 import java.awt.event.ItemEvent;
 
 import javax.swing.DefaultListModel;
-import javax.swing.JList;
 
-import data.dataHandling.MySqlDataManager;
+import data.objekte.AObject;
 import data.objekte.Aufgabe;
 import data.objekte.Thema;
+import gui.swing.appComponents.AppComboBox;
+import gui.swing.appComponents.AppList;
 import gui.swing.appComponents.AppPanel;
 
+/**
+ * 
+ */
 public class OverviewPanel extends AppPanel {
 
 	private static final Color BG_COLOR = Color.WHITE;
-	private static final String TITLE = "Liste";
+	private static final String THEMEN = "Themen";
+	private static final String AUFGABEN = "Aufgaben";
 
-	AppComboBox comboBox;
-	JList<Aufgabe> liste;
+	AppComboBox<Thema> comboBox;
+	AppList<Aufgabe> liste;
+	
+	private OverviewPanelDelegate delegate;
+	public void setAufgabenListDelegate(OverviewPanelDelegate aufgabenListDelegate) {
+		this.delegate = aufgabenListDelegate;
+	}
 
-	public OverviewPanel() {
-		super(TITLE);
+	/**
+	 * 
+	 */
+	public OverviewPanel(Thema[] themen) {
+		super(THEMEN);
 		setBackground(BG_COLOR);
+
+		if (themen == null)
+			themen = new Thema[0];
+		addComponent(initThemenComboBox(themen), 0, 0, 100, 8);
+		addComponent(initAufgabenListPanel(themen[0]), 0, 1, 100, 92);
 	}
 
-	@Override
-	protected void initComponents() {
+	/**
+	 * 
+	 * @return
+	 */
+	private AppComboBox<Thema> initThemenComboBox(Thema[] themen) {
 
-		Thema[] themen = MySqlDataManager.getInstance().leseAlleThemen();
-		if (themen != null) {
-			comboBox = new AppComboBox(themen);
-			addComponent(comboBox, 0, 0, 100, 10);
-		}
-		comboBox.addItemListener(e-> itemWasSelected(e));
-		
-		addComponent(initListPanel(), 0, 1, 100, 90);
+		comboBox = new AppComboBox(themen);
+		comboBox.addItemListener(e -> themaWasSelected(e));
+		return comboBox;
 	}
 
-	private AppPanel initListPanel() {
-		AppPanel p = new AppPanel("Aufgaben") {
-			
-			@Override
-			protected void initComponents() {
-				liste = new JList<Aufgabe>(new Aufgabe[0]);
-				addComponent(liste, 0, 0, 100, 90);
-				liste.setAutoscrolls(true);
-			}
-		};
-		return p;
-	}
+	/**
+	 * 
+	 * @param e
+	 */
+	private void themaWasSelected(ItemEvent e) {
 
-	private void itemWasSelected(ItemEvent e) {
-		
+		if (e.getStateChange() != ItemEvent.SELECTED)
+			return;
 		Thema th = (Thema) e.getItem();
-		
-		Aufgabe[] all = new Aufgabe[th.getAufgaben().size()];
-		int i = 0;
-		for (Aufgabe aufgabe : all) {
-			all[i++] = aufgabe;
-		}	
-		
-		liste.setListData(all);
-//		showMessage(all.toString());
-		liste.revalidate();
+		if (th == null)
+			return;
+		liste.setModel(createAufgabenListModel(th));
+		delegate.handleThema(th);
+	}
+
+	/**
+	 * 
+	 * @param th
+	 */
+	public void refreshAufgabenList(Thema th) {
+		liste.setModel(createAufgabenListModel(th));
 		liste.repaint();
 	}
 
+	/**
+	 * 
+	 * @param th
+	 * @return
+	 */
+	private DefaultListModel<AObject> createAufgabenListModel(Thema th) {
+		DefaultListModel<AObject> model = (DefaultListModel<AObject>) liste.getModel();
+		model.clear();
+		if (th.getAufgaben() != null)
+			model.addAll(th.getAufgaben());
+		return model;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	private AppPanel initAufgabenListPanel(Thema th) {
+		AppPanel p = new AppPanel(AUFGABEN);
+
+		DefaultListModel<AObject> model = new DefaultListModel<AObject>();
+		model.addAll(th.getAufgaben());
+		liste = new AppList<Aufgabe>(model);
+		p.addComponent(liste, 0, 0, 100, 90);
+		liste.addListSelectionListener(_ -> delegate.aufgabeWasSelected((Aufgabe) liste.getSelectedValue()));
+
+		return p;
+	}
+	
+	public Thema getSelectedThema() {
+		return (Thema) comboBox.getSelectedItem();
+	}
 }

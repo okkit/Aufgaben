@@ -38,6 +38,7 @@ CREATE TABLE IF NOT EXISTS `klassenbuch`.`aufgabe` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `text` VARCHAR(450) NOT NULL,
   `Thema_id` INT NOT NULL,
+  `title` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`, `Thema_id`),
   INDEX `fk_aufgabe_Thema_idx` (`Thema_id` ASC) VISIBLE,
   CONSTRAINT `fk_aufgabe_Thema`

@@ -1,4 +1,4 @@
-package gui;
+package sandbox;
 
 import java.awt.Font;
 import java.awt.Rectangle;

@@ -11,5 +11,4 @@ public class AppTextArea extends JTextArea {
 		super();
 		setFont(TEXT_FONT);
 	}
-
 }
